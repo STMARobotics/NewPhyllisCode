@@ -45,9 +45,7 @@ import frc.robot.drivesystems.Operator;
 public class Robot extends TimedRobot {
   private static DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   private static ManipulatorsSubsystem manipulatorsSubsystem = new ManipulatorsSubsystem();
-  private static OI m_oi;
 
-  private static SendableChooser<Command> m_chooser = new SendableChooser<>();
   private static SendableChooser<Driver> driverChooser = new SendableChooser<>();
   private static SendableChooser<Operator> operatorChooser = new SendableChooser<>();
   private static SendableChooser<XboxController> driverControllerChooser = new SendableChooser<>();
@@ -57,16 +55,9 @@ public class Robot extends TimedRobot {
   private final XboxController controllerTwo = new XboxController(2);
   private final ControlSet controlSet = new ControlSet(driverControllerChooser, operatorControllerChooser);
 
-  private Command m_autonomousCommand;
   private Command driveCommand;
   private Command operateCommand;
   private Command autoCommand;
-
-  // finds position of switches and scale
-  // array of three characters (either 'L' or 'R')
-  // first char = position of alliance switch
-  // second char = position of scale
-  // third cher = position of opponent switch
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -74,31 +65,28 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_oi = new OI();
     driveCommand = new DriveCommand(driverChooser, driveTrainSubsystem);
     operateCommand = new OperateCommand(operatorChooser, manipulatorsSubsystem);
-    // chooser.addObject("My Auto", new MyAutoCommand());
-    //SmartDashboard.putData("Auto mode", m_chooser);
 
-    driverChooser.addDefault("Jorge Driver", new JorgeDriver(controlSet));
-    driverChooser.addObject("Brandon Driver", new BrandonDriver(controlSet));
+    driverChooser.setDefaultOption("Jorge Driver", new JorgeDriver(controlSet));
+    driverChooser.addOption("Brandon Driver", new BrandonDriver(controlSet));
     SmartDashboard.putData("Driver", driverChooser);
 
-    driverControllerChooser.addDefault("Driver Controller: 1", controllerOne);
-    driverControllerChooser.addObject("Driver Controller: 2", controllerTwo);
+    driverControllerChooser.setDefaultOption("Driver Controller: 1", controllerOne);
+    driverControllerChooser.addOption("Driver Controller: 2", controllerTwo);
     SmartDashboard.putData("Driver Controller", driverControllerChooser);
 
-    operatorChooser.addDefault("Jorge Operator", new JorgeOperator(controlSet));
-    operatorChooser.addObject("Brandon Operator", new BrandonOperator(controlSet));
+    operatorChooser.setDefaultOption("Jorge Operator", new JorgeOperator(controlSet));
+    operatorChooser.addOption("Brandon Operator", new BrandonOperator(controlSet));
     SmartDashboard.putData("Operator", operatorChooser);
 
-    operatorControllerChooser.addObject("Operator Controller: 1", controllerOne);
-    operatorControllerChooser.addDefault("Operator Controller: 2", controllerTwo);
+    operatorControllerChooser.setDefaultOption("Operator Controller: 1", controllerOne);
+    operatorControllerChooser.addOption("Operator Controller: 2", controllerTwo);
     SmartDashboard.putData("Operator Controller", operatorControllerChooser);
 
-    autoChooser.addDefault("Center Auto", "Center");
-    autoChooser.addObject("Right Auto", "Right");
-    autoChooser.addObject("Left Auto", "Left");
+    autoChooser.setDefaultOption("Center Auto", "Center");
+    autoChooser.addOption("Right Auto", "Right");
+    autoChooser.addOption("Left Auto", "Left");
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
