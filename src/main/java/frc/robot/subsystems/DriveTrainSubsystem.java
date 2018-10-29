@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.commands.DriveTrainSubDefaultCommand;
 
 public class DriveTrainSubsystem extends Subsystem {
 
@@ -34,7 +35,7 @@ public class DriveTrainSubsystem extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        
+        setDefaultCommand(new DriveTrainSubDefaultCommand(this));
     }
 
     public DifferentialDrive getDriveTrain() {
@@ -56,9 +57,13 @@ public class DriveTrainSubsystem extends Subsystem {
         return rightFront.getSelectedSensorPosition(0);
     }
 
-    public float getGyroPosition() {
+    public double getGyroPosition() {
         // return gyro.getYaw();
         return 0f;
+    }
+
+    public AHRS getGyro() {
+        return gyro;
     }
 
 }

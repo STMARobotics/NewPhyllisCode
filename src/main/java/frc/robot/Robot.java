@@ -27,14 +27,17 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.drivesystems.AidanDriver;
+import frc.robot.drivesystems.AidanOperator;
 import frc.robot.drivesystems.BrandonDriver;
 import frc.robot.drivesystems.BrandonOperator;
 import frc.robot.drivesystems.ControlSet;
 import frc.robot.drivesystems.Driver;
+import frc.robot.drivesystems.HunterDriver;
+import frc.robot.drivesystems.HunterOperator;
 import frc.robot.drivesystems.JorgeDriver;
 import frc.robot.drivesystems.JorgeOperator;
 import frc.robot.drivesystems.Operator;
-import frc.robot.smartdashboard.CachingSendableChooser;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -47,11 +50,11 @@ public class Robot extends TimedRobot {
   private static DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   private static ManipulatorsSubsystem manipulatorsSubsystem = new ManipulatorsSubsystem();
 
-  private static SendableChooser<Driver> driverChooser = new CachingSendableChooser<>();
-  private static SendableChooser<Operator> operatorChooser = new CachingSendableChooser<>();
-  private static SendableChooser<XboxController> driverControllerChooser = new CachingSendableChooser<>();
-  private static SendableChooser<XboxController> operatorControllerChooser = new CachingSendableChooser<>();
-  private static SendableChooser<String> autoChooser = new CachingSendableChooser<>();
+  private static SendableChooser<Driver> driverChooser = new SendableChooser<>();
+  private static SendableChooser<Operator> operatorChooser = new SendableChooser<>();
+  private static SendableChooser<XboxController> driverControllerChooser = new SendableChooser<>();
+  private static SendableChooser<XboxController> operatorControllerChooser = new SendableChooser<>();
+  private static SendableChooser<String> autoChooser = new SendableChooser<>();
   private final XboxController controllerOne = new XboxController(0);
   private final XboxController controllerTwo = new XboxController(2);
   private final ControlSet controlSet = new ControlSet(driverControllerChooser, operatorControllerChooser);
@@ -71,6 +74,8 @@ public class Robot extends TimedRobot {
 
     driverChooser.setDefaultOption("Jorge Driver", new JorgeDriver(controlSet));
     driverChooser.addOption("Brandon Driver", new BrandonDriver(controlSet));
+    driverChooser.addObject("Hunter Driver", new HunterDriver(controlSet));
+    driverChooser.addObject("Aidan Driver", new AidanDriver(controlSet));
     SmartDashboard.putData("Driver", driverChooser);
 
     driverControllerChooser.setDefaultOption("Driver Controller: 1", controllerOne);
@@ -79,6 +84,8 @@ public class Robot extends TimedRobot {
 
     operatorChooser.setDefaultOption("Jorge Operator", new JorgeOperator(controlSet));
     operatorChooser.addOption("Brandon Operator", new BrandonOperator(controlSet));
+    operatorChooser.addObject("Hunter Operator", new HunterOperator(controlSet));
+    operatorChooser.addObject("Aidan Operator", new AidanOperator(controlSet));
     SmartDashboard.putData("Operator", operatorChooser);
 
     operatorControllerChooser.setDefaultOption("Operator Controller: 1", controllerOne);
@@ -102,7 +109,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Gyro position", driveTrainSubsystem.getGyroPosition());
   }
 
   /**
@@ -134,19 +140,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_chooser.getSelected();
-
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-     * switch(autoSelected) { case "My Auto": autonomousCommand = new
-     * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
-     * ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-    // m_autonomousCommand.start();
-    // }
+    // finds position of switches and scale
+    // array of three characters (either 'L' or 'R')
+    // first char = position of alliance switch
+    // second char = position of scale
+    // third cher = position of opponent switch
     String gameData = DriverStation.getInstance().getGameSpecificMessage();
     char switchPosition = gameData.charAt(0);
     String chosenCommand = autoChooser.getSelected();
@@ -185,9 +183,6 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    // if (m_autonomousCommand != null) {
-    // m_autonomousCommand.cancel();
-    // }
     if (autoCommand != null) {
       autoCommand.cancel();
     }
