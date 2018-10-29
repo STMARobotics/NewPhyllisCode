@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-// import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,7 +18,6 @@ public class DriveTrainSubsystem extends Subsystem {
     private final SpeedControllerGroup leftDriveTrain = new SpeedControllerGroup(leftFront, leftBack);
     private final SpeedControllerGroup rightDriveTrain = new SpeedControllerGroup(rightFront, rightBack);
     private final DifferentialDrive driveTrain = new DifferentialDrive(leftDriveTrain, rightDriveTrain);
-    // private final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
     public DriveTrainSubsystem() {
         leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
@@ -55,15 +53,6 @@ public class DriveTrainSubsystem extends Subsystem {
 
     public int getRightEncoderPosition() {
         return rightFront.getSelectedSensorPosition(0);
-    }
-
-    public double getGyroPosition() {
-        // return gyro.getYaw();
-        return 0f;
-    }
-
-    public AHRS getGyro() {
-        return gyro;
     }
 
 }
