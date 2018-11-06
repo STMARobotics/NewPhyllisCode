@@ -76,8 +76,8 @@ public class Robot extends TimedRobot {
 
     driverChooser.setDefaultOption("Jorge Driver", new JorgeDriver(controlSet));
     driverChooser.addOption("Brandon Driver", new BrandonDriver(controlSet));
-    driverChooser.addObject("Hunter Driver", new HunterDriver(controlSet));
-    driverChooser.addObject("Aidan Driver", new AidanDriver(controlSet));
+    driverChooser.addOption("Hunter Driver", new HunterDriver(controlSet));
+    driverChooser.addOption("Aidan Driver", new AidanDriver(controlSet));
     SmartDashboard.putData("Driver", driverChooser);
 
     driverControllerChooser.setDefaultOption("Driver Controller: 1", controllerOne);
@@ -86,8 +86,8 @@ public class Robot extends TimedRobot {
 
     operatorChooser.setDefaultOption("Jorge Operator", new JorgeOperator(controlSet));
     operatorChooser.addOption("Brandon Operator", new BrandonOperator(controlSet));
-    operatorChooser.addObject("Hunter Operator", new HunterOperator(controlSet));
-    operatorChooser.addObject("Aidan Operator", new AidanOperator(controlSet));
+    operatorChooser.addOption("Hunter Operator", new HunterOperator(controlSet));
+    operatorChooser.addOption("Aidan Operator", new AidanOperator(controlSet));
     SmartDashboard.putData("Operator", operatorChooser);
 
     operatorControllerChooser.setDefaultOption("Operator Controller: 1", controllerOne);
